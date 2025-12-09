@@ -1,0 +1,2 @@
+tiendagama.dao.PedidoDetalleDAO
+tiendagama.model.PedidoDetalle
