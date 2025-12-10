@@ -19,11 +19,6 @@ public class ProductoForm extends JDialog {
     private JTextArea txtDescripcion;
     private JLabel lblPreview;
 
-    private static final Dimension FIELD_BIG = new Dimension(360, 34);
-    private static final Dimension TEXTAREA_BIG = new Dimension(360, 120);
-    private static final Dimension PREVIEW_SIZE = new Dimension(260, 260);
-    private static final Dimension BTN_BIG = new Dimension(140, 42);
-
     public ProductoForm(CrudProductos padre, Producto producto) {
         super(padre, true);
         UIUtils.applyAppStyle();
@@ -31,35 +26,31 @@ public class ProductoForm extends JDialog {
         this.producto = producto;
 
         setTitle(producto == null ? "Nuevo Producto" : "Editar Producto");
-        setSize(760,520);
-        setLocationRelativeTo(padre);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         initComponents();
+        pack(); // ajusta ventana al contenido
+        setLocationRelativeTo(padre);
     }
 
     private void initComponents() {
         JPanel main = new JPanel(new BorderLayout(15,15));
         main.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
 
+        // Panel izquierdo con campos
         JPanel left = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(10,10,10,10);
+        c.insets = new Insets(8,8,8,8);
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        txtNombre = new JTextField();
-        txtNombre.setPreferredSize(FIELD_BIG);
-        txtPrecio = new JTextField();
-        txtPrecio.setPreferredSize(new Dimension(120,34));
-        txtStock = new JTextField();
-        txtStock.setPreferredSize(new Dimension(100,34));
-        txtDescripcion = new JTextArea();
+        txtNombre = new JTextField(20);
+        txtPrecio = new JTextField(10);
+        txtStock = new JTextField(10);
+        txtDescripcion = new JTextArea(5, 20);
         txtDescripcion.setLineWrap(true);
         txtDescripcion.setWrapStyleWord(true);
-        txtDescripcion.setPreferredSize(TEXTAREA_BIG);
-        txtImagen = new JTextField();
-        txtImagen.setPreferredSize(FIELD_BIG);
+        txtImagen = new JTextField(20);
 
         int row = 0;
         c.gridx=0; c.gridy=row; left.add(new JLabel("Nombre:"), c);
@@ -81,17 +72,18 @@ public class ProductoForm extends JDialog {
         c.gridx=0; c.gridy=row; left.add(new JLabel("Imagen (ruta):"), c);
         c.gridx=1; left.add(txtImagen, c);
 
+        // Panel derecho con preview
         JPanel right = new JPanel(new BorderLayout(10,10));
         lblPreview = new JLabel("Preview", SwingConstants.CENTER);
-        lblPreview.setPreferredSize(PREVIEW_SIZE);
+        lblPreview.setPreferredSize(new Dimension(220,220));
         lblPreview.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         right.add(lblPreview, BorderLayout.NORTH);
 
         JButton btnCargar = new JButton("Cargar Imagen");
-        btnCargar.setPreferredSize(new Dimension(140,40));
         right.add(btnCargar, BorderLayout.CENTER);
 
-        JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
+        // Panel inferior con botones centrados
+        JPanel bottom = new JPanel(new FlowLayout(FlowLayout.CENTER,15,10));
         JButton btnGuardar = UIUtils.makePrimary("Guardar");
         JButton btnCancelar = UIUtils.makeSecondary("Cancelar");
         bottom.add(btnCancelar);
@@ -103,6 +95,7 @@ public class ProductoForm extends JDialog {
 
         add(main);
 
+        // Si es edición, cargar datos
         if (producto != null) {
             txtNombre.setText(producto.getNombre());
             txtPrecio.setText(String.valueOf(producto.getPrecio()));
@@ -112,6 +105,7 @@ public class ProductoForm extends JDialog {
             loadPreview(producto.getImagen());
         }
 
+        // Listeners
         btnCargar.addActionListener(e -> {
             JFileChooser j = new JFileChooser();
             int r = j.showOpenDialog(this);

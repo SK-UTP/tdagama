@@ -24,26 +24,26 @@ public class UsuarioForm extends JDialog {
         this.usuario = usuario;
 
         setTitle(usuario == null ? "Nuevo Usuario" : "Editar Usuario");
-        setSize(450,350);
-        setLocationRelativeTo(padre);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         initComponents();
+        pack(); // ajusta ventana al contenido
+        setLocationRelativeTo(padre);
     }
 
     private void initComponents() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(10,10,10,10);
+        c.insets = new Insets(8,8,8,8);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.WEST;
 
-        txtNombre = new JTextField();
-        txtApellido = new JTextField();
-        txtCorreo = new JTextField();
-        txtTelefono = new JTextField();
-        txtPassword = new JPasswordField();
+        txtNombre = new JTextField(20);
+        txtApellido = new JTextField(20);
+        txtCorreo = new JTextField(20);
+        txtTelefono = new JTextField(15);
+        txtPassword = new JPasswordField(20);
         cmbRol = new JComboBox<>(new String[]{"ADMIN","VENDEDOR","CLIENTE"});
 
         int row = 0;
@@ -70,8 +70,9 @@ public class UsuarioForm extends JDialog {
         c.gridx=0; c.gridy=row; panel.add(new JLabel("Rol:"), c);
         c.gridx=1; panel.add(cmbRol, c);
 
+        // Panel inferior con botones centrados
         row++;
-        JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
+        JPanel bottom = new JPanel(new FlowLayout(FlowLayout.CENTER,15,10));
         JButton btnGuardar = UIUtils.makePrimary("Guardar");
         JButton btnCerrar = UIUtils.makeSecondary("Cerrar");
         bottom.add(btnCerrar);

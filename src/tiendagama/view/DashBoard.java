@@ -47,7 +47,20 @@ public class DashBoard extends JFrame {
         JButton btnPedidos = UIUtils.makeSecondary("Pedidos");
         JButton btnVentas = UIUtils.makeSecondary("Ventas");
         JButton btnReportes = UIUtils.makeSecondary("Reportes");
-        JButton btnSalir = UIUtils.makeSmall("Salir"); // más pequeño
+        JButton btnDocumentos = UIUtils.makeSecondary("Boletas/Facturas");
+        JButton btnSalir = UIUtils.makeSmall("Salir");
+        
+        
+        btnSalir.setPreferredSize(new Dimension(60, 25));  
+        btnSalir.setFont(new Font("Arial", Font.PLAIN, 10));
+        btnProductos.setPreferredSize(new Dimension(150, 40));
+        btnUsuarios.setPreferredSize(new Dimension(150, 40));
+        btnCarrito.setPreferredSize(new Dimension(150, 40));
+        btnPedidos.setPreferredSize(new Dimension(150, 40));
+        btnVentas.setPreferredSize(new Dimension(150, 40));
+        btnReportes.setPreferredSize(new Dimension(150, 40));
+        btnDocumentos.setPreferredSize(new Dimension(150, 40));
+        
 
         // permisos por rol
         if (!"ADMIN".equalsIgnoreCase(rol)) {
@@ -56,25 +69,38 @@ public class DashBoard extends JFrame {
         if ("CLIENTE".equalsIgnoreCase(rol)) {
             btnVentas.setEnabled(false);
             btnPedidos.setEnabled(false);
+            btnDocumentos.setEnabled(false); // opcional: clientes no generan documentos
         }
 
-        // distribución en grid
+       
         c.gridx = 0; c.gridy = 0; panel.add(btnProductos, c);
         c.gridx = 1; c.gridy = 0; panel.add(btnUsuarios, c);
         c.gridx = 0; c.gridy = 1; panel.add(btnCarrito, c);
         c.gridx = 1; c.gridy = 1; panel.add(btnPedidos, c);
         c.gridx = 0; c.gridy = 2; panel.add(btnVentas, c);
         c.gridx = 1; c.gridy = 2; panel.add(btnReportes, c);
-        c.gridx = 0; c.gridy = 3; c.gridwidth = 2; panel.add(btnSalir, c);
+        c.gridx = 0; c.gridy = 3; panel.add(btnDocumentos, c); 
+        c.gridx = 0; c.gridy = 4; c.gridwidth = 2; panel.add(btnSalir, c);
+        c.gridx = 1; 
+        c.gridy = 4; 
+        c.gridwidth = 1; 
+        c.fill = GridBagConstraints.NONE;   
+        c.anchor = GridBagConstraints.LINE_END; 
+        panel.add(btnSalir, c);
 
-        add(panel);
 
+        
+       
+       add(panel);
+
+        
         btnProductos.addActionListener(e -> new CrudProductos().setVisible(true));
         btnUsuarios.addActionListener(e -> new CrudUsuarios().setVisible(true));
         btnCarrito.addActionListener(e -> new CarritoView(usuarioId).setVisible(true));
         btnPedidos.addActionListener(e -> new OrdenPedido(usuarioId).setVisible(true));
         btnVentas.addActionListener(e -> new VentasView().setVisible(true));
-        btnReportes.addActionListener(e -> new ReportesView().setVisible(true)); // Ventana central de reportes
+        btnReportes.addActionListener(e -> new ReportesView().setVisible(true));
+        btnDocumentos.addActionListener(e -> new DocumentoView().setVisible(true)); // ACCIÓN NUEVA
         btnSalir.addActionListener(e -> confirmExit());
     }
 
